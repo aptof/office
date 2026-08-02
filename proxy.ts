@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { headers } from 'next/headers';
 import { auth } from '@/lib/auth';
+import { routes } from './helpers/routes';
 
 export async function proxy(request: NextRequest) {
   const session = await auth.api.getSession({
@@ -8,12 +9,12 @@ export async function proxy(request: NextRequest) {
   });
 
   if (!session) {
-    return NextResponse.redirect(new URL('/sign-in', request.url));
+    return NextResponse.redirect(new URL(routes.login, request.url));
   }
 
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: ['/dashboard'], // Specify the routes the middleware applies to
+  matcher: ['/dashboard/:path*'], // Specify the routes the middleware applies to
 };
