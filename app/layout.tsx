@@ -3,6 +3,7 @@ import { Inter, Geist_Mono } from 'next/font/google';
 import './globals.css';
 import { Toaster } from '@/components/ui/toast';
 import QueryProvider from '@/components/aptof/query-provider';
+import { TooltipProvider } from '@/components/ui/tooltip';
 
 const inter = Inter({
   variable: '--font-sans',
@@ -27,9 +28,11 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.variable} ${geistMono.variable} h-full antialiased`}>
       <body className="min-h-full">
-        <QueryProvider>
-          <main className="min-h-full flex flex-col">{children}</main>
-        </QueryProvider>
+        <TooltipProvider>
+          <QueryProvider>
+            <main className="min-h-full flex flex-col">{children}</main>
+          </QueryProvider>
+        </TooltipProvider>
         <Toaster />
       </body>
     </html>
