@@ -16,10 +16,10 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from '@/components/ui/sidebar';
-import { Spinner } from '@/components/ui/spinner';
 import { routes } from '@/helpers/routes';
+import { getInitials } from '@/helpers/utility';
 import { authClient } from '@/lib/auth-client';
-import { ChevronsUpDown } from 'lucide-react';
+import { ChevronsUpDown, LogOut, Settings, User } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
@@ -35,6 +35,8 @@ export function NavUser() {
   }
   const { isMobile } = useSidebar();
 
+  const { data } = authClient.useSession();
+
   return (
     <SidebarMenu>
       <SidebarMenuItem>
@@ -47,11 +49,13 @@ export function NavUser() {
               >
                 <Avatar className="h-8 w-8 rounded-lg">
                   <AvatarImage src="unknown" alt="Tushar Bakshi" />
-                  <AvatarFallback className="rounded-lg">TB</AvatarFallback>
+                  <AvatarFallback className="rounded-lg">
+                    {data ? getInitials(data.user.name) : '..'}
+                  </AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-medium">Tushar Bakshi</span>
-                  <span className="truncate text-xs">tusharbakshi6@gmail.com</span>
+                  <span className="truncate font-medium">{data ? data.user.name : '..'}</span>
+                  <span className="truncate text-xs">{data ? data.user.email : '..'}</span>
                 </div>
                 <ChevronsUpDown className="ml-auto size-4" />
               </SidebarMenuButton>
@@ -65,13 +69,17 @@ export function NavUser() {
           >
             <DropdownMenuGroup>
               <DropdownMenuLabel>My Account</DropdownMenuLabel>
-              <DropdownMenuItem>Profile</DropdownMenuItem>
-              <DropdownMenuItem>Settings</DropdownMenuItem>
+              <DropdownMenuItem>
+                <User /> Profile
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <Settings /> Settings
+              </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
               <DropdownMenuItem onClick={logout} disabled={isLoading}>
-                {isLoading ? <Spinner /> : 'Logout'}
+                <LogOut /> Logout
               </DropdownMenuItem>
             </DropdownMenuGroup>
           </DropdownMenuContent>
