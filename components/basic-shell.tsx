@@ -1,6 +1,4 @@
-import { RouteLink } from '@/helpers/utility';
-import React, { ReactNode } from 'react';
-import { SidebarInset, SidebarTrigger } from '@/components/ui/sidebar';
+'use client';
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -10,13 +8,21 @@ import {
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
 import { Separator } from '@/components/ui/separator';
+import { SidebarInset, SidebarTrigger } from '@/components/ui/sidebar';
+import { createRouteLinks } from '@/helpers/routes';
+import { RouteLink } from '@/helpers/utility';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import React from 'react';
 
-interface ShellProps {
-  links: RouteLink[];
-  children?: ReactNode;
-}
+export default function BasicShell({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  const path = usePathname();
+  const links: RouteLink[] = createRouteLinks(path);
 
-export default function BasicShell({ links, children }: ShellProps) {
   return (
     <SidebarInset>
       <header className="flex h-14 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
@@ -44,7 +50,7 @@ function Breadcrumbs({ links }: { links: RouteLink[] }) {
                 {isLast ? (
                   <BreadcrumbPage>{item.label}</BreadcrumbPage>
                 ) : (
-                  <BreadcrumbLink href={item.route}>{item.label}</BreadcrumbLink>
+                  <BreadcrumbLink render={<Link href={item.route} />}>{item.label}</BreadcrumbLink>
                 )}
               </BreadcrumbItem>
 

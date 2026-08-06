@@ -1,5 +1,5 @@
 import { OfficeSidebar } from '@/components/office-sidebar';
-import { SidebarInset, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
+import { SidebarProvider } from '@/components/ui/sidebar';
 
 export default function RootLayout({
   children,
