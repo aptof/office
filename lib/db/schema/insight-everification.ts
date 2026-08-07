@@ -7,6 +7,8 @@ export const everificationCaseType = sqliteTable('everification_case_type', {
   type: text('type').notNull(),
 });
 
+export type EverificationCaseType = typeof everificationCaseType.$inferSelect;
+
 export const everificationCaseTypeRelations = relations(everificationCaseType, ({ many }) => ({
   cases: many(everificationCase),
 }));
@@ -24,6 +26,8 @@ export const everificationCase = sqliteTable('everification_case', {
     .references(() => everificationCaseStatus.id),
   id: text('id').primaryKey(),
 });
+
+export type EverificationCase = typeof everificationCase.$inferSelect;
 
 export const everificationCaseRelations = relations(everificationCase, ({ one }) => ({
   panTan: one(panTan, {
@@ -46,6 +50,8 @@ export const everificationCaseStatus = sqliteTable('everification_case_status', 
   id: text('id').primaryKey(),
   description: text('description').notNull(),
 });
+
+export type EverificationCaseStatus = typeof everificationCaseStatus.$inferSelect;
 
 export const everificationCaseStatusRelations = relations(everificationCaseStatus, ({ many }) => ({
   cases: many(everificationCase),

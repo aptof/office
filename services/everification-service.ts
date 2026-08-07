@@ -1,5 +1,6 @@
 import { db } from '@/lib/db'; // your drizzle db instance
-import { everificationCase, everificationCaseType } from '@/lib/db/schema';
+import { everificationCase, everificationCaseType, InsightStatus } from '@/lib/db/schema';
+import { InsightStatusRepository } from '@/repositories/insight-status-repository';
 import { sql, eq } from 'drizzle-orm';
 
 export interface EverificationReport {
@@ -11,8 +12,15 @@ export interface EverificationReport {
   totalCases: number;
 }
 
+export interface ReportWithStatus {
+  reports: EverificationReport[];
+  status: InsightStatus;
+}
+
 export class EverificationService {
-  public async getCaseSummaryReport(): Promise<EverificationReport[]> {
+  private insightStatusRepo = new InsightStatusRepository();
+
+  public async getCaseSummaryReport(): Promise<ReportWithStatus> {
     const summaryData = await db
       .select({
         caseTypeId: everificationCaseType.id,
@@ -35,6 +43,8 @@ export class EverificationService {
       .innerJoin(everificationCaseType, eq(everificationCase.typeId, everificationCaseType.id))
       .groupBy(everificationCase.typeId, everificationCase.year);
 
-    return summaryData;
+    const status = await this.insightStatusRepo.getEverificationStatus();
+
+    return { reports: summaryData, status: status };
   }
 }

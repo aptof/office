@@ -9,6 +9,8 @@ export const panTan = sqliteTable('pan_tan', {
   linked: text('linked').references((): AnySQLiteColumn => panTan.pan),
 });
 
+export type PanTan = typeof panTan.$inferSelect;
+
 export const panTanRelations = relations(panTan, ({ one, many }) => ({
   pan: one(panTan, {
     fields: [panTan.linked],

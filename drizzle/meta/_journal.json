@@ -15,6 +15,20 @@
       "when": 1786080135464,
       "tag": "0001_glossy_whiplash",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1786098694527,
+      "tag": "0002_panoramic_darwin",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "6",
+      "when": 1786100154627,
+      "tag": "0003_large_firedrake",
+      "breakpoints": true
     }
   ]
 }
